@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name='Sorteio'
+rootProject.name='My Application'
