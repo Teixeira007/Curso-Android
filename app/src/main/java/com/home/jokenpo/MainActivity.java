@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             image.setImageResource(R.drawable.papel);
             if(escolhaUsuario == Escolha.PAPEL){
                 result.setText("Empatou!");
-            }else if(escolhaUsuario == Escolha.TESOURA){
+            }else if(escolhaUsuario == Escolha.PEDRA){
                 result.setText("Você perdeu!");
             }else{
                 result.setText("Você ganhou!");
