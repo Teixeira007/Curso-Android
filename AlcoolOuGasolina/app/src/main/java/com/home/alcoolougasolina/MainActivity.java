@@ -38,8 +38,8 @@ public class MainActivity extends AppCompatActivity {
             Double alcoolDouble = Double.parseDouble(alcoolValue);
             Double gasolinaDouble = Double.parseDouble(gasolinaValue);
 
-            Double resultadoDouble = (alcoolDouble * 11)/7.5;
-            if(resultadoDouble > gasolinaDouble){
+            Double resultadoDouble = (gasolinaDouble * 0.7);
+            if(resultadoDouble < alcoolDouble){
                 resultado.setText("Melhor utilizar Gasolina");
             }else{
                 resultado.setText("Melhor utilizar Álcool");
