@@ -2,6 +2,7 @@ package com.home.fastfoodactivity.ui.listFood;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -32,11 +33,11 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
     public void configAdapter(){
         recyclerView = findViewById(R.id.my_recycler_view);
 
-        RecyclerView.LayoutManager gridLayout = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
         adapter = new ListFoodAdapter();
 
 
-        recyclerView.setLayoutManager(gridLayout);
+        recyclerView.setLayoutManager(linearLayout);
         recyclerView.setAdapter(adapter);
     }
 
@@ -47,7 +48,7 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
 
     @Override
     public void showMessageError() {
-        Toast.makeText(this, "Erro ao carregar o cardápio", Toast.LENGTH_SHORT);
+        Toast.makeText(this, "Erro ao carregar o cardápio", Toast.LENGTH_SHORT).show();
     }
 
     @Override

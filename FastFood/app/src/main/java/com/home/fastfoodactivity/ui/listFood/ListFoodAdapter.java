@@ -60,7 +60,7 @@ public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ListFo
 
         public void bind(Food food){
             name.setText(food.getName());
-            price.setText(Double.toString(food.getPrice()));
+            price.setText("$"+Double.toString(food.getPrice()));
             description.setText(food.getDescription());
 
             Picasso.get().load(food.getImage()).into(image);

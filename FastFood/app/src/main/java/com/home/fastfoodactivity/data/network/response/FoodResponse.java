@@ -4,6 +4,10 @@ import com.squareup.moshi.Json;
 
 public class FoodResponse {
 
+    @Json(name = "id")
+    private String id;
+
+    @Json(name = "name")
     private String name;
     @Json(name = "img")
     private String image;
@@ -11,16 +15,13 @@ public class FoodResponse {
     @Json(name = "dsc")
     private String description;
 
+    @Json(name = "price")
     private double price;
 
+    @Json(name = "rate")
     private int rate;
 
-    public FoodResponse(String name, String image, String description, double price) {
-        this.name = name;
-        this.image = image;
-        this.description = description;
-        this.price = price;
-    }
+
 
     public FoodResponse(String name, String image, String description, double price, int rate) {
         this.name = name;
