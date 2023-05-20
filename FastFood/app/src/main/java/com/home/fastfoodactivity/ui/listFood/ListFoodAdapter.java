@@ -1,0 +1,74 @@
+package com.home.fastfoodactivity.ui.listFood;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.home.fastfoodactivity.R;
+import com.home.fastfoodactivity.data.model.Food;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ListFoodViewHolder> {
+
+    private List<Food> foods;
+
+    public ListFoodAdapter() {
+        this.foods = new ArrayList<>();
+    }
+
+    @NonNull
+    @Override
+    public ListFoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_food, parent, false);
+        return new ListFoodViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ListFoodViewHolder holder, int position) {
+        holder.bind(foods.get(position));
+    }
+
+    @Override
+    public int getItemCount() {
+        return (foods != null && foods.size() >0) ? foods.size() : 0;
+    }
+
+    public static class ListFoodViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView name;
+        private ImageView image;
+        private TextView price;
+        private TextView description;
+
+        public ListFoodViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            name = itemView.findViewById(R.id.name_food);
+            image = itemView.findViewById(R.id.image_food);
+            price = itemView.findViewById(R.id.price_food);
+            description = itemView.findViewById(R.id.description_food);
+
+        }
+
+        public void bind(Food food){
+            name.setText(food.getName());
+            price.setText(Double.toString(food.getPrice()));
+            description.setText(food.getDescription());
+
+            Picasso.get().load(food.getImage()).into(image);
+        }
+    }
+
+    public void setFoods(List<Food> foods){
+        this.foods = foods;
+        notifyDataSetChanged();
+    }
+}
