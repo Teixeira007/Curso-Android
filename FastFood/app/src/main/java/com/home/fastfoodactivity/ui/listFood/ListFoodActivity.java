@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,15 +18,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.home.fastfoodactivity.R;
 import com.home.fastfoodactivity.data.model.Food;
 import com.home.fastfoodactivity.data.model.ItemPedido;
 import com.home.fastfoodactivity.ui.detailsFood.DetailsFoodActivity;
+import com.home.fastfoodactivity.ui.listCart.CartData;
 import com.home.fastfoodactivity.ui.listCart.ListCartAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListFoodActivity extends AppCompatActivity implements ListFoodContract.view, ListFoodAdapter.ClickItem {
@@ -35,6 +40,11 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
     private ListFoodAdapter adapter;
     private ListFoodPresenter presenter;
     private Toolbar toolbar;
+    private Button buttonAdd;
+    private Button buttonRemove;
+
+
+    public static String EXTRA_CART = "EXTRA_CART";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +115,7 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("MissingInflatedId")
     public void showPopupCart(View view){
 
 
@@ -117,10 +128,14 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         AlertDialog dialog = builder.create();
         dialog.show();
 
-//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Toast.makeText(this, "Tá funcionando", Toast.LENGTH_LONG).show();
-
         recyclerViewCart = dialogView.findViewById(R.id.my_recycler_view_cart);
+        TextView total = dialogView.findViewById(R.id.total_cart);
+
+        //calcula valor total do pedido
+        double totalValue = calculateTotal();
+        total.setText("Total: $"+Double.toString(totalValue));
+
+
 
         configAdapterCart(recyclerViewCart);
 
@@ -128,17 +143,24 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
 
     public void configAdapterCart(RecyclerView recyclerViewCart){
         ListCartAdapter listCartAdapter = new ListCartAdapter();
-//        DetailsFoodActivity detailsFoodActivity = new DetailsFoodActivity(listCartAdapter);
 
-        listCartAdapter.setListCart(
-                new ItemPedido(
-                new Food("Pão",
-                "https://goldbelly.imgix.net/uploads/showcase_media_asset/image/79619/joes-kc-ribs-brisket-and-burnt-ends.6710e994980e485e6441b794717ad6fb.jpg?ixlib=react-9.0.2&auto=format&ar=1%3A1",
-                34, "Pão delicia", 5), 5));
+        ItemPedido itemPedido = (ItemPedido) getIntent().getSerializableExtra(EXTRA_CART);
+
+        listCartAdapter.setListCart(CartData.getCartItems());
 
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
 
         recyclerViewCart.setLayoutManager(linearLayout);
         recyclerViewCart.setAdapter(listCartAdapter);
+    }
+
+    public double calculateTotal(){
+        double total = 0;
+        List<ItemPedido> itensCart = CartData.getCartItems();
+        for(ItemPedido itens: itensCart){
+            total += itens.getProduct().getPrice() * itens.getQuantity();
+        }
+
+        return total;
     }
 }

@@ -1,8 +1,9 @@
 package com.home.fastfoodactivity.data.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ItemPedido {
+public class ItemPedido implements Serializable {
 
     private Food product;
     private int quantity;

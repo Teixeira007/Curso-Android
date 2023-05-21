@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,7 +21,9 @@ import android.widget.Toast;
 import com.home.fastfoodactivity.R;
 import com.home.fastfoodactivity.data.model.Food;
 import com.home.fastfoodactivity.data.model.ItemPedido;
+import com.home.fastfoodactivity.ui.listCart.CartData;
 import com.home.fastfoodactivity.ui.listCart.ListCartAdapter;
+import com.home.fastfoodactivity.ui.listFood.ListFoodActivity;
 import com.squareup.picasso.Picasso;
 
 public class DetailsFoodActivity extends AppCompatActivity {
@@ -33,9 +36,7 @@ public class DetailsFoodActivity extends AppCompatActivity {
     private Button addQuantity;
 //    private ListCartAdapter adapter;
 
-//    public DetailsFoodActivity(ListCartAdapter adapter) {
-//        this.adapter = adapter;
-//    }
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -46,7 +47,7 @@ public class DetailsFoodActivity extends AppCompatActivity {
 
         configToolBar();
 
-
+//        adapter = new ListCartAdapter();
         setValores();
 
     }
@@ -124,7 +125,13 @@ public class DetailsFoodActivity extends AppCompatActivity {
         int quantityInt = Integer.parseInt(quantityValue);
 
         ItemPedido itemPedido = new ItemPedido(food, quantityInt);
+        CartData.addToCart(itemPedido);
+
 //        adapter.setListCart(itemPedido);
+
+//        Intent intent = new Intent(this, ListFoodActivity.class);
+//        intent.putExtra(ListFoodActivity.EXTRA_CART, itemPedido);
+//        startActivity(intent);
 
         if(itemPedido != null){
             Toast.makeText(this, itemPedido.getQuantity()+" "+itemPedido.getProduct().getName()+" adicionado com sucesso", Toast.LENGTH_LONG).show();

@@ -16,10 +16,11 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListCartAdapter extends RecyclerView.Adapter<ListCartAdapter.ListCartViewHolder> {
+public class ListCartAdapter extends RecyclerView.Adapter<ListCartAdapter.ListCartViewHolder>{
 
     private List<ItemPedido> itensPedidos;
 
@@ -49,7 +50,7 @@ public class ListCartAdapter extends RecyclerView.Adapter<ListCartAdapter.ListCa
         private TextView nameFoodCart;
         private ImageView imageFoodCart;
         private TextView priceFoodCart;
-        private EditText quantityFoodCart;
+        private TextView quantityFoodCart;
 
         public ListCartViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,13 +67,17 @@ public class ListCartAdapter extends RecyclerView.Adapter<ListCartAdapter.ListCa
             double priceItens = itemPedido.getQuantity() * itemPedido.getProduct().getPrice();
             priceFoodCart.setText("$"+Double.toString(priceItens));
 
-            quantityFoodCart.setText(Integer.toString(itemPedido.getQuantity()));
+            quantityFoodCart.setText("Quant: "+Integer.toString(itemPedido.getQuantity()));
             Picasso.get().load(itemPedido.getProduct().getImage()).into(imageFoodCart);
+
         }
+
+
 
     }
 
-    public void setListCart(ItemPedido itemPedido){
-        this.itensPedidos.add(itemPedido);
+    public void setListCart(List<ItemPedido> itensPedidos){
+        this.itensPedidos = itensPedidos;
+        notifyDataSetChanged();
     }
 }
