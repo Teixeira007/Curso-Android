@@ -1,19 +1,23 @@
 package com.home.fastfoodactivity.ui.listFood;
 
+import static com.home.fastfoodactivity.ui.detailsFood.DetailsFoodActivity.EXTRA_FOOD;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.home.fastfoodactivity.R;
 import com.home.fastfoodactivity.data.model.Food;
+import com.home.fastfoodactivity.ui.detailsFood.DetailsFoodActivity;
 
 import java.util.List;
 
-public class ListFoodActivity extends AppCompatActivity implements ListFoodContract.view{
+public class ListFoodActivity extends AppCompatActivity implements ListFoodContract.view, ListFoodAdapter.ClickItem {
 
     private RecyclerView recyclerView;
     private ListFoodAdapter adapter;
@@ -34,7 +38,7 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         recyclerView = findViewById(R.id.my_recycler_view);
 
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
-        adapter = new ListFoodAdapter();
+        adapter = new ListFoodAdapter(this);
 
 
         recyclerView.setLayoutManager(linearLayout);
@@ -55,5 +59,12 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
     protected void onDestroy() {
         super.onDestroy();
         presenter.destroyView();
+    }
+
+    @Override
+    public void onItemClicked(Food food) {
+        Intent intent = new Intent(this, DetailsFoodActivity.class);
+        intent.putExtra(EXTRA_FOOD, food);
+        startActivity(intent);
     }
 }

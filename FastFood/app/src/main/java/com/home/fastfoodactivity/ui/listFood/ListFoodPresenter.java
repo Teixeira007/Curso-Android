@@ -32,7 +32,6 @@ public class ListFoodPresenter implements ListFoodContract.presenter{
                             view.showMessageError();
                         }
                     }
-
                     @Override
                     public void onFailure(Call<List<FoodResponse>> call, Throwable t) {
                         view.showMessageError();

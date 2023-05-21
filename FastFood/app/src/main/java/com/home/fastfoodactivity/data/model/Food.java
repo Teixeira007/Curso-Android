@@ -1,6 +1,8 @@
 package com.home.fastfoodactivity.data.model;
 
-public class Food {
+import java.io.Serializable;
+
+public class Food implements Serializable {
 
     private String id;
     private String name;

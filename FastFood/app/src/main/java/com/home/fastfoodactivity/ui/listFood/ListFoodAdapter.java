@@ -19,8 +19,11 @@ import java.util.List;
 public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ListFoodViewHolder> {
 
     private List<Food> foods;
+    private static ClickItem clickItem;
 
-    public ListFoodAdapter() {
+
+    public ListFoodAdapter(ClickItem clickItem) {
+        this.clickItem = clickItem;
         this.foods = new ArrayList<>();
     }
 
@@ -48,6 +51,8 @@ public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ListFo
         private TextView price;
         private TextView description;
 
+        private Food food;
+
         public ListFoodViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -56,9 +61,19 @@ public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ListFo
             price = itemView.findViewById(R.id.price_food);
             description = itemView.findViewById(R.id.description_food);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(clickItem != null){
+                        clickItem.onItemClicked(food);
+                    }
+                }
+            });
+
         }
 
         public void bind(Food food){
+            this.food = food;
             name.setText(food.getName());
             price.setText("$"+Double.toString(food.getPrice()));
             description.setText(food.getDescription());
@@ -70,5 +85,9 @@ public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ListFo
     public void setFoods(List<Food> foods){
         this.foods = foods;
         notifyDataSetChanged();
+    }
+
+    public interface ClickItem{
+        void onItemClicked(Food food);
     }
 }
