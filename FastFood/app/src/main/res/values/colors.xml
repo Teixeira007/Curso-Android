@@ -5,4 +5,5 @@
     <color name="colorGainsboro">#ECECEC</color>
     <color name="colorGray">#787878</color>
     <color name="colorPrimary">#046B35</color>
+    <color name="colorPrimaryDark">#003C1D</color>
 </resources>

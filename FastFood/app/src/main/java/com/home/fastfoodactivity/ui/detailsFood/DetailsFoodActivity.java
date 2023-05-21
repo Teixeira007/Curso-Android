@@ -1,9 +1,16 @@
 package com.home.fastfoodactivity.ui.detailsFood;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,23 +20,56 @@ import android.widget.Toast;
 import com.home.fastfoodactivity.R;
 import com.home.fastfoodactivity.data.model.Food;
 import com.home.fastfoodactivity.data.model.ItemPedido;
+import com.home.fastfoodactivity.ui.listCart.ListCartAdapter;
 import com.squareup.picasso.Picasso;
 
 public class DetailsFoodActivity extends AppCompatActivity {
 
     public static final String EXTRA_FOOD = "EXTRA_FOOD";
+
+    private Toolbar toolbar;
     private EditText quantity;
     private Button removeQuantity;
     private Button addQuantity;
+//    private ListCartAdapter adapter;
 
+//    public DetailsFoodActivity(ListCartAdapter adapter) {
+//        this.adapter = adapter;
+//    }
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_food);
 
+
+        configToolBar();
+
+
         setValores();
 
     }
+
+    public void configToolBar(){
+        toolbar = findViewById(R.id.my_toolbar_details);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Drawable backIcon = getResources().getDrawable(R.drawable.baseline_arrow_back_24);
+        getSupportActionBar().setHomeAsUpIndicator(backIcon);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     public void setValores(){
         ImageView imageProduct;
@@ -84,6 +124,8 @@ public class DetailsFoodActivity extends AppCompatActivity {
         int quantityInt = Integer.parseInt(quantityValue);
 
         ItemPedido itemPedido = new ItemPedido(food, quantityInt);
+//        adapter.setListCart(itemPedido);
+
         if(itemPedido != null){
             Toast.makeText(this, itemPedido.getQuantity()+" "+itemPedido.getProduct().getName()+" adicionado com sucesso", Toast.LENGTH_LONG).show();
         }
