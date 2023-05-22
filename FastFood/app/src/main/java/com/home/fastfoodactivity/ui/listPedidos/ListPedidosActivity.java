@@ -1,11 +1,14 @@
 package com.home.fastfoodactivity.ui.listPedidos;
 
+import static com.home.fastfoodactivity.ui.DetailsPedido.DetailsPedidoActivity.EXTRA_DETAILS_PEDIDO;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,11 +17,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.home.fastfoodactivity.R;
 import com.home.fastfoodactivity.data.model.Pedido;
+import com.home.fastfoodactivity.ui.DetailsPedido.DetailsPedidoActivity;
 
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class ListPedidosActivity extends AppCompatActivity {
+public class ListPedidosActivity extends AppCompatActivity implements ListPedidosAdapter.ItemClicado {
 
     public static final String EXTRA_PEDIDOS = "EXTRA_PEDIDOS";
     private Toolbar toolbar;
@@ -65,10 +69,17 @@ public class ListPedidosActivity extends AppCompatActivity {
         RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayout);
 
-        adapter = new ListPedidosAdapter();
+        adapter = new ListPedidosAdapter(this);
 
         adapter.setPedidos(pedidos);
         recyclerView.setAdapter(adapter);
 
+    }
+
+    @Override
+    public void onClickItem(Pedido pedido) {
+        Intent intent = new Intent(this, DetailsPedidoActivity.class);
+        intent.putExtra(EXTRA_DETAILS_PEDIDO, pedido);
+        startActivity(intent);
     }
 }

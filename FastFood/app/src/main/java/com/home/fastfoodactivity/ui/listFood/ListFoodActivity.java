@@ -63,7 +63,7 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         presenter = new ListFoodPresenter(this);
         presenter.getFoods();
 
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "my-database").build();
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "my-database-pedidos").build();
 
     }
 
@@ -214,16 +214,22 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
                     public void run() {
                         Pedido pedido = new Pedido(CartData.getCartItems(), calculateTotal());
 
-                        db.pedidoDao().insertPedido(pedido);
-                        CartData.cleanCart();
+                        if(CartData.getCartItems().size()>0){
+                            db.pedidoDao().insertPedido(pedido);
+                        }
 
 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                if(CartData.getCartItems().size()>0){
+                                    Toast.makeText(ListFoodActivity.this, "Pedido finalizado", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(ListFoodActivity.this, "Adicione itens antes de finalizar", Toast.LENGTH_SHORT).show();
+                                }
+                                CartData.cleanCart();
                                 listCartAdapter.setListCart(CartData.getCartItems());
                                 total.setText("Total: $0");
-                                Toast.makeText(ListFoodActivity.this, "Pedido finalizado", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }

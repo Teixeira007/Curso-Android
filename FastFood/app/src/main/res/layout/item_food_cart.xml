@@ -37,11 +37,12 @@
 
         <TextView
             android:id="@+id/quantity_product_cart"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:ems="10"
             android:inputType="number"
+            android:textSize="20sp"
             android:text="Quant: 1"
             app:layout_constraintBaseline_toBaselineOf="@+id/price_cart"
             app:layout_constraintStart_toEndOf="@+id/image_cart" />

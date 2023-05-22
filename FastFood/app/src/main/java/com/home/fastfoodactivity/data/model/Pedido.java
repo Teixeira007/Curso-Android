@@ -4,10 +4,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Pedido{
+public class Pedido implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;

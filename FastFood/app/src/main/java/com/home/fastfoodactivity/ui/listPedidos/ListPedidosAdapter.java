@@ -16,10 +16,13 @@ import java.util.List;
 
 public class ListPedidosAdapter extends RecyclerView.Adapter<ListPedidosAdapter.ListPedidosViewHolder> {
 
-    List<Pedido> pedidos;
+    private List<Pedido> pedidos;
+    private static ItemClicado itemClicado;
 
-    public ListPedidosAdapter() {
+    public ListPedidosAdapter(ItemClicado itemClicado) {
         this.pedidos = new ArrayList<>();
+        this.itemClicado = itemClicado;
+
     }
 
     @NonNull
@@ -44,13 +47,25 @@ public class ListPedidosAdapter extends RecyclerView.Adapter<ListPedidosAdapter.
         private TextView subDescricaoPedido;
         private TextView totalPedido;
 
+        private Pedido pedido;
+
         public ListPedidosViewHolder(@NonNull View itemView) {
             super(itemView);
             subDescricaoPedido = itemView.findViewById(R.id.sub_descricao_list_pedidos);
             totalPedido = itemView.findViewById(R.id.total_list_pedidos);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(itemClicado != null){
+                        itemClicado.onClickItem(pedido);
+                    }
+                }
+            });
         }
 
         public void bind(Pedido pedido){
+            this.pedido = pedido;
             if(pedido.getListItens().get(0).getProduct().getName().length() > 8){
                 String subDescricao = pedido.getListItens().get(0).getQuantity()+" "+pedido.getListItens().get(0).getProduct().getName().substring(0, 8);
                 subDescricaoPedido.setText(subDescricao+"...");
@@ -64,5 +79,9 @@ public class ListPedidosAdapter extends RecyclerView.Adapter<ListPedidosAdapter.
 
     public void setPedidos(List<Pedido> pedidos){
         this.pedidos = pedidos;
+    }
+
+    public interface ItemClicado{
+        void onClickItem(Pedido pedido);
     }
 }
