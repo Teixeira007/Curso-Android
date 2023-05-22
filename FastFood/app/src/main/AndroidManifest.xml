@@ -15,6 +15,9 @@
         android:theme="@style/Base.Theme.FastFoodActivity"
         tools:targetApi="31">
         <activity
+            android:name=".ui.listPedidos.ListPedidosActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.detailsFood.DetailsFoodActivity"
             android:exported="false" />
         <activity

@@ -1,12 +1,12 @@
 package com.home.fastfoodactivity.ui.listFood;
 
 import static com.home.fastfoodactivity.ui.detailsFood.DetailsFoodActivity.EXTRA_FOOD;
+import static com.home.fastfoodactivity.ui.listPedidos.ListPedidosActivity.EXTRA_PEDIDOS;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -19,12 +19,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.home.fastfoodactivity.R;
 import com.home.fastfoodactivity.data.model.Food;
 import com.home.fastfoodactivity.data.model.ItemPedido;
@@ -33,8 +32,8 @@ import com.home.fastfoodactivity.data.room.AppDatabase;
 import com.home.fastfoodactivity.ui.detailsFood.DetailsFoodActivity;
 import com.home.fastfoodactivity.ui.listCart.CartData;
 import com.home.fastfoodactivity.ui.listCart.ListCartAdapter;
+import com.home.fastfoodactivity.ui.listPedidos.ListPedidosActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListFoodActivity extends AppCompatActivity implements ListFoodContract.view, ListFoodAdapter.ClickItem {
@@ -63,6 +62,9 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
 
         presenter = new ListFoodPresenter(this);
         presenter.getFoods();
+
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "my-database").build();
+
     }
 
     public void configAdapter(){
@@ -108,17 +110,26 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_category_tool_bar, menu);
-        getMenuInflater().inflate(R.menu.menu_cart_tool_bar, menu);
+        getMenuInflater().inflate(R.menu.menu_tool_bar, menu);
+
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
+
+        //click em cart
         if(itemId == R.id.menu_cart_item){
             showPopupCart(item.getActionView());
             return true;
         }
+
+        //click em list
+        if(itemId == R.id.menu_list_pedidos){
+            showListPedidos(item.getActionView());
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -194,7 +205,6 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
     //Finalizar Pedido
 
     public void configFinalizarPedido(){
-        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "my-database").build();
 
         finalizarPedido.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,11 +217,13 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
                         db.pedidoDao().insertPedido(pedido);
                         CartData.cleanCart();
 
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                listCartAdapter.setListCart(CartData.getCartItems());
+                                total.setText("Total: $0");
                                 Toast.makeText(ListFoodActivity.this, "Pedido finalizado", Toast.LENGTH_SHORT).show();
-                                listarPedidos();
                             }
                         });
                     }
@@ -220,14 +232,26 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         });
     }
 
-    public void listarPedidos(){
+
+    //Listar Pedidos
+
+    public void showListPedidos(View view){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 List<Pedido> pedidos = db.pedidoDao().getAll();
-                for(Pedido pedido: pedidos){
-                    Log.i("Dados", "Total:"+pedido.getTotal());
-                }
+
+                Gson gson = new Gson();
+                String listPedidosJson = gson.toJson(pedidos);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(ListFoodActivity.this, ListPedidosActivity.class);
+                        intent.putExtra(EXTRA_PEDIDOS, listPedidosJson);
+                        startActivity(intent);
+                    }
+                });
             }
         }).start();
     }

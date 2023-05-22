@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 import java.util.List;
 
 @Entity
-public class Pedido {
+public class Pedido{
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
