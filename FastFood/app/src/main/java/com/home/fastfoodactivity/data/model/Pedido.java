@@ -1,10 +1,21 @@
 package com.home.fastfoodactivity.data.model;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity
 public class Pedido {
 
+    @PrimaryKey(autoGenerate = true)
+    private Integer id;
+
+    @ColumnInfo(name = "lista_itens")
     private  List<ItemPedido> listItens;
+
+    @ColumnInfo(name = "total_pedido")
     private double total;
 
     public Pedido(List<ItemPedido> listItens, double total) {
@@ -12,15 +23,19 @@ public class Pedido {
         this.total = total;
     }
 
-    public double getTotal() {
-        return total;
-    }
-
-    public Pedido(List<ItemPedido> listItens) {
-        this.listItens = listItens;
+    public Integer getId() {
+        return id;
     }
 
     public List<ItemPedido> getListItens() {
         return listItens;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

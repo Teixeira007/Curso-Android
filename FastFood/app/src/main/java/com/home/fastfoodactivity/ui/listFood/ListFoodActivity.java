@@ -9,10 +9,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +28,8 @@ import android.widget.Toast;
 import com.home.fastfoodactivity.R;
 import com.home.fastfoodactivity.data.model.Food;
 import com.home.fastfoodactivity.data.model.ItemPedido;
+import com.home.fastfoodactivity.data.model.Pedido;
+import com.home.fastfoodactivity.data.room.AppDatabase;
 import com.home.fastfoodactivity.ui.detailsFood.DetailsFoodActivity;
 import com.home.fastfoodactivity.ui.listCart.CartData;
 import com.home.fastfoodactivity.ui.listCart.ListCartAdapter;
@@ -39,9 +43,12 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
     private RecyclerView recyclerViewCart;
     private ListFoodAdapter adapter;
     private ListFoodPresenter presenter;
+    private ListCartAdapter listCartAdapter;
+    private TextView total;
     private Toolbar toolbar;
-    private Button buttonAdd;
-    private Button buttonRemove;
+
+    private Button finalizarPedido;
+    private AppDatabase db;
 
 
     public static String EXTRA_CART = "EXTRA_CART";
@@ -115,10 +122,33 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         return super.onOptionsItemSelected(item);
     }
 
+    //Configurando Cart
+
     @SuppressLint("MissingInflatedId")
     public void showPopupCart(View view){
 
+        //criar o dialog view
+        View dialogView = createDialogView();
 
+        recyclerViewCart = dialogView.findViewById(R.id.my_recycler_view_cart);
+        total = dialogView.findViewById(R.id.total_cart);
+
+        //calcula valor total do pedido
+        double totalValue = calculateTotal();
+        total.setText("Total: $"+Double.toString(totalValue));
+
+        //Butão finalizar Pedido
+        finalizarPedido = dialogView.findViewById(R.id.finalizar_pedido);
+
+
+        //configurar o adapter
+        configAdapterCart(recyclerViewCart);
+
+        configFinalizarPedido();
+
+    }
+
+    public View createDialogView(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
 
@@ -128,21 +158,11 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        recyclerViewCart = dialogView.findViewById(R.id.my_recycler_view_cart);
-        TextView total = dialogView.findViewById(R.id.total_cart);
-
-        //calcula valor total do pedido
-        double totalValue = calculateTotal();
-        total.setText("Total: $"+Double.toString(totalValue));
-
-
-
-        configAdapterCart(recyclerViewCart);
-
+        return dialogView;
     }
 
     public void configAdapterCart(RecyclerView recyclerViewCart){
-        ListCartAdapter listCartAdapter = new ListCartAdapter();
+        listCartAdapter = new ListCartAdapter();
 
         ItemPedido itemPedido = (ItemPedido) getIntent().getSerializableExtra(EXTRA_CART);
 
@@ -162,5 +182,53 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         }
 
         return total;
+    }
+
+    public void cleanCart(View view){
+        CartData.cleanCart();
+        listCartAdapter.setListCart(CartData.getCartItems());
+        total.setText("Total: $0");
+        Toast.makeText(this, "Carrinho de produtos limpo", Toast.LENGTH_SHORT).show();
+    }
+
+    //Finalizar Pedido
+
+    public void configFinalizarPedido(){
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "my-database").build();
+
+        finalizarPedido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Pedido pedido = new Pedido(CartData.getCartItems(), calculateTotal());
+
+                        db.pedidoDao().insertPedido(pedido);
+                        CartData.cleanCart();
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(ListFoodActivity.this, "Pedido finalizado", Toast.LENGTH_SHORT).show();
+                                listarPedidos();
+                            }
+                        });
+                    }
+                }).start();
+            }
+        });
+    }
+
+    public void listarPedidos(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Pedido> pedidos = db.pedidoDao().getAll();
+                for(Pedido pedido: pedidos){
+                    Log.i("Dados", "Total:"+pedido.getTotal());
+                }
+            }
+        }).start();
     }
 }
