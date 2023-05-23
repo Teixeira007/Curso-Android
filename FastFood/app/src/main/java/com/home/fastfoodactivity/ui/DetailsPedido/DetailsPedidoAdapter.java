@@ -15,6 +15,7 @@ import com.home.fastfoodactivity.data.model.ItemPedido;
 import com.home.fastfoodactivity.data.model.Pedido;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +65,9 @@ public class DetailsPedidoAdapter extends RecyclerView.Adapter<DetailsPedidoAdap
 
             //Price total do item
             double priceItens = itemPedido.getQuantity() * itemPedido.getProduct().getPrice();
-            priceDetails.setText("$"+Double.toString(priceItens));
+            DecimalFormat decimalFormat = new DecimalFormat("#.00");
+            String priceString = decimalFormat.format(priceItens);
+            priceDetails.setText("$"+priceString);
 
             quantityDetails.setText("Quant: "+Integer.toString(itemPedido.getQuantity()));
             Picasso.get().load(itemPedido.getProduct().getImage()).into(imageDetails);

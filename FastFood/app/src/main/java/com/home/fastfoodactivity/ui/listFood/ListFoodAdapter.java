@@ -13,6 +13,7 @@ import com.home.fastfoodactivity.R;
 import com.home.fastfoodactivity.data.model.Food;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,11 @@ public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ListFo
         public void bind(Food food){
             this.food = food;
             name.setText(food.getName());
-            price.setText("$"+Double.toString(food.getPrice()));
+
+            //pegando o preço com apenas 2 casas decimais
+            DecimalFormat decimalFormat = new DecimalFormat("#.00");
+            String priceString = decimalFormat.format(food.getPrice());
+            price.setText("$"+priceString);
             description.setText(food.getDescription());
 
             Picasso.get().load(food.getImage()).into(image);

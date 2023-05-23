@@ -27,6 +27,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="96dp"
         android:layout_marginEnd="16dp"
+        android:contentDescription="@string/image_produto"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -75,6 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
+        android:contentDescription="@string/estrela_rate"
         android:src="@drawable/baseline_star_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_product" />
@@ -85,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Description"
+        android:text="@string/description"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,6 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:contentDescription="@string/description"
         android:textColor="@color/colorGray"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,9 +111,10 @@
         android:layout_width="45dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:contentDescription="@string/quatidade_produto"
         android:ems="10"
-        android:text="1"
         android:inputType="number"
+        android:text="@string/quantidade_default"
         app:layout_constraintBaseline_toBaselineOf="@+id/button_remove"
         app:layout_constraintStart_toEndOf="@+id/button_remove" />
 
@@ -123,7 +127,7 @@
         android:layout_marginTop="20dp"
         android:minHeight="1dp"
         android:onClick="setRemoveQuantity"
-        android:text="-"
+        android:text="@string/remove_item"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description_product" />
@@ -136,7 +140,7 @@
         android:layout_marginStart="12dp"
         android:minHeight="1dp"
         android:onClick="setAddQuantity"
-        android:text="+"
+        android:text="@string/add_produto"
         android:textSize="30sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/quantity_product"
         app:layout_constraintStart_toEndOf="@+id/quantity_product" />
@@ -146,13 +150,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="addItemPedido"
-        android:text="Adicionar no carrinho"
+        android:text="@string/btn_adicionar_carrinho"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.524"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_add"
-        app:layout_constraintVertical_bias="0.674" />
+        app:layout_constraintVertical_bias="0.674"
+        style="@style/ButtonStyle"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

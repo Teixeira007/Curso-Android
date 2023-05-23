@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +66,9 @@ public class ListCartAdapter extends RecyclerView.Adapter<ListCartAdapter.ListCa
 
             //Price total do item
             double priceItens = itemPedido.getQuantity() * itemPedido.getProduct().getPrice();
-            priceFoodCart.setText("$"+Double.toString(priceItens));
+            DecimalFormat decimalFormat = new DecimalFormat("#.00");
+            String priceString = decimalFormat.format(priceItens);
+            priceFoodCart.setText("$"+priceString);
 
             quantityFoodCart.setText("Quant: "+Integer.toString(itemPedido.getQuantity()));
             Picasso.get().load(itemPedido.getProduct().getImage()).into(imageFoodCart);

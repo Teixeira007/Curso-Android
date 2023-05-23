@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.home.fastfoodactivity.R;
 import com.home.fastfoodactivity.data.model.Pedido;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +74,10 @@ public class ListPedidosAdapter extends RecyclerView.Adapter<ListPedidosAdapter.
                 String subDescricao = pedido.getListItens().get(0).getQuantity()+" "+pedido.getListItens().get(0).getProduct().getName();
                 subDescricaoPedido.setText(subDescricao+"...");
             }
-            totalPedido.setText(Double.toString(pedido.getTotal()));
+
+            DecimalFormat decimalFormat = new DecimalFormat("#.00");
+            String priceString = decimalFormat.format(pedido.getTotal());
+            totalPedido.setText(priceString);
         }
     }
 

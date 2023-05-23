@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="12dp"
-    android:layout_margin="6dp">
+    android:layout_margin="6dp"
+    style="@style/CardView.Light">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,7 +17,7 @@
 
         <ImageView
             android:id="@+id/image_cart"
-            android:layout_width="130dp"
+            android:layout_width="110dp"
             android:layout_height="100dp"
             android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,9 +28,9 @@
             android:id="@+id/name_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="8dp"
             android:textColor="@android:color/black"
-            android:textSize="20dp"
+            android:textSize="15dp"
             app:layout_constraintStart_toEndOf="@+id/image_cart"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Nome do Produto" />
@@ -39,11 +40,11 @@
             android:id="@+id/quantity_product_cart"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="8dp"
             android:ems="10"
             android:inputType="number"
-            android:textSize="20sp"
             android:text="Quant: 1"
+            android:textSize="15sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/price_cart"
             app:layout_constraintStart_toEndOf="@+id/image_cart" />
 
@@ -54,7 +55,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="20dp"
             android:textColor="@color/colorPrimary"
-            android:textSize="17sp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="$2.56" />
