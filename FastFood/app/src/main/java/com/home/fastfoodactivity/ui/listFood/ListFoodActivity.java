@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         configToolBar();
         configAdapter();
         configCategory();
+        searchFood();
 
 
         presenter = new ListFoodPresenter(this);
@@ -314,5 +316,25 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
             }
         });
         popupMenu.show();
+    }
+
+    public void searchFood(){
+        SearchView searchView = findViewById(R.id.searchView);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Toast.makeText(ListFoodActivity.this, "Pesquisado: "+s, Toast.LENGTH_SHORT).show();
+                if(s != null && s!=""){
+                    presenter.getAll(s);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 }

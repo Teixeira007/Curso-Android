@@ -7,6 +7,7 @@ import com.home.fastfoodactivity.data.network.response.FoodResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +55,30 @@ public class ListFoodPresenter implements ListFoodContract.presenter{
     @Override
     public void getPizzas() {
         makeApiRequestType("Pizzas");
+    }
+
+    @Override
+    public void getAll(String search) {
+        ApiFood.getINSTANCE().getAll().enqueue(new Callback<List<FoodResponse>>() {
+            @Override
+            public void onResponse(Call<List<FoodResponse>> call, Response<List<FoodResponse>> response) {
+                if(response.isSuccessful()){
+                    List<Food> foods = DtoFood.convertFoodResponseForFood(response.body());
+                    List<Food> filterFoods = foods
+                            .stream()
+                            .filter(food -> food.getName().toLowerCase().contains(search.toLowerCase()))
+                            .collect(Collectors.toList());
+                    view.showFoods(filterFoods);
+                }else{
+                    view.showMessageError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FoodResponse>> call, Throwable t) {
+                view.showMessageError();
+            }
+        });
     }
 
 

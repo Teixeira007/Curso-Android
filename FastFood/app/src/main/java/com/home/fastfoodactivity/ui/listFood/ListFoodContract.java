@@ -23,6 +23,7 @@ public interface ListFoodContract {
         void getDrinks();
         void getIceCream();
         void getPizzas();
+        void getAll(String food);
 
         void destroyView();
     }
