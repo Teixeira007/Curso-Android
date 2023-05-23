@@ -12,14 +12,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,8 +64,11 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         configToolBar();
         configAdapter();
+        configCategory();
+
 
         presenter = new ListFoodPresenter(this);
         presenter.getFoods();
@@ -111,8 +121,8 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_tool_bar, menu);
-
         return true;
+
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -129,6 +139,8 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
             showListPedidos(item.getActionView());
             return true;
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -260,5 +272,47 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
                 });
             }
         }).start();
+    }
+
+    public void configCategory(){
+        ImageView iconCategory = findViewById(R.id.menu_item);
+
+        iconCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupMenu(view);
+            }
+        });
+    }
+
+    public void showPopupMenu(View view){
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.inflate(R.menu.menu_category);
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @SuppressLint("NonConstantResourceId")
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if(id == R.id.category_burgers){
+                    presenter.getBurgers();
+//                    Toast.makeText(ListFoodActivity.this, "Categoria Burgers ", Toast.LENGTH_SHORT).show();
+                }else if(id == R.id.category_sandwiches){
+                    presenter.getSandwiches();
+                } else if (id == R.id.category_drinks) {
+                    presenter.getDrinks();
+                } else if (id == R.id.category_ice_cream) {
+                    presenter.getIceCream();
+                } else if (id == R.id.category_pizzas) {
+                    presenter.getPizzas();
+                } else if (id == R.id.category_all) {
+                    presenter.getAll();
+                } else if (id == R.id.category_best_foods) {
+                    presenter.getFoods();
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
     }
 }

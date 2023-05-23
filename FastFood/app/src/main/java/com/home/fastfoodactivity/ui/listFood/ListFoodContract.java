@@ -17,6 +17,13 @@ public interface ListFoodContract {
     public interface presenter{
         void getFoods();
 
+        void getBurgers();
+        void getAll();
+        void getSandwiches();
+        void getDrinks();
+        void getIceCream();
+        void getPizzas();
+
         void destroyView();
     }
 }
