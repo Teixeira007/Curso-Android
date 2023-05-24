@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -82,11 +83,13 @@ public class ListFoodActivity extends AppCompatActivity implements ListFoodContr
     public void configAdapter(){
         recyclerView = findViewById(R.id.my_recycler_view);
 
-        RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
+//        RecyclerView.LayoutManager linearLayout = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager gridLayout = new GridLayoutManager(this, 2);
         adapter = new ListFoodAdapter(this);
 
 
-        recyclerView.setLayoutManager(linearLayout);
+
+        recyclerView.setLayoutManager(gridLayout);
         recyclerView.setAdapter(adapter);
     }
 

@@ -75,13 +75,24 @@ public class ListFoodAdapter extends RecyclerView.Adapter<ListFoodAdapter.ListFo
 
         public void bind(Food food){
             this.food = food;
-            name.setText(food.getName());
+            if(food.getName().length() > 9){
+                name.setText(food.getName().substring(0,9)+"..");
+            }else{
+                name.setText(food.getName());
+            }
+
+
 
             //pegando o preço com apenas 2 casas decimais
             DecimalFormat decimalFormat = new DecimalFormat("#.00");
             String priceString = decimalFormat.format(food.getPrice());
             price.setText("$"+priceString);
-            description.setText(food.getDescription());
+
+            if(food.getDescription().length()>22){
+                description.setText(food.getDescription().substring(0,22)+"...");
+            }else{
+                description.setText(food.getDescription());
+            }
 
             Picasso.get().load(food.getImage()).into(image);
         }
